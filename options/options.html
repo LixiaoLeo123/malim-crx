@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malim — Settings</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: #fafafa;
+      color: #18181b;
+      padding: 24px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #18181b; color: #f4f4f5; }
+    }
+    h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: #660874; }
+    @media (prefers-color-scheme: dark) { h1 { color: #a78bfa; } }
+    h2 { font-size: 1rem; font-weight: 700; margin: 1.5rem 0 0.75rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e4e4e7; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; }
+    @media (prefers-color-scheme: dark) { h2 { border-color: #3f3f46; } }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.25rem; }
+    input, select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #d4d4d8;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: #fff;
+      color: #18181b;
+    }
+    @media (prefers-color-scheme: dark) {
+      input, select { background: #27272a; border-color: #3f3f46; color: #f4f4f5; }
+    }
+    .checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+    .checkbox-row input { width: auto; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 1.5rem;
+      background: #660874;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #4c0260; }
+    .btn:active { transform: scale(0.98); }
+    @media (prefers-color-scheme: dark) { .btn { background: #7c3aed; } .btn:hover { background: #6d28d9; } }
+    .status { margin-top: 0.75rem; font-size: 0.85rem; color: #22c55e; text-align: center; }
+    .status.error { color: #ef4444; }
+    .help { font-size: 0.75rem; color: #a1a1aa; margin-top: 0.25rem; }
+  </style>
+</head>
+<body>
+  <h1>Malim ⚡ Settings</h1>
+
+  <h2>AI Parser</h2>
+
+  <label>API Key</label>
+  <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off">
+  <p class="help">An OpenAI-compatible API key for text parsing.</p>
+
+  <label>API URL</label>
+  <input type="url" id="apiUrl" placeholder="https://api.deepseek.com/chat/completions">
+  <p class="help">Full endpoint URL (e.g. DeepSeek, OpenAI, etc.)</p>
+
+  <label>Model Name</label>
+  <input type="text" id="modelName" placeholder="deepseek-chat">
+
+  <label>Concurrency</label>
+  <input type="number" id="concurrency" min="1" max="8" value="2">
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="stressMark" checked>
+    <label style="margin: 0; display: inline;">Stress marks (acute accents on vowels)</label>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="showGrammarNotes">
+    <label style="margin: 0; display: inline;">Grammar notes in popover</label>
+  </div>
+
+  <h2>Precise RU Accentuation</h2>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="ruaccentEnabled">
+    <label style="margin: 0; display: inline;">Enable precise RU accentuation</label>
+  </div>
+  <p class="help">Self-host the RUAccent server from the Malim desktop app (ru_accent_server.py).</p>
+
+  <label>RUAccent URL</label>
+  <input type="url" id="ruaccentUrl" placeholder="http://localhost:8001">
+
+  <button class="btn" id="save">Save Settings</button>
+  <div id="status" class="status"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>

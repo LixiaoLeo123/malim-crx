@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Malim — Russian Parser",
+  "version": "0.1.0",
+  "description": "Parse Russian text inline with color-coded tokens, grammar info, and OpenRussian dictionary lookup.",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [{
+    "resources": ["lib/*", "options/*", "OpenRussian.mdx"],
+    "matches": ["<all_urls>"]
+  }]
+}

@@ -1,0 +1,663 @@
+/* ═══════════════════════════════════════════════════════════
+   Malim CRX — Inline token styling
+   Colors ported from Reader.svelte colorMap + getBlockPosClass()
+   =========================================================== */
+
+/* ── Token colors (exact from Reader.svelte) ─────────────── */
+
+.malim-token {
+  display: inline;
+  padding: 0 2px;
+  margin: 0 1px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.1s ease, box-shadow 0.1s ease;
+  white-space: nowrap;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.malim-token:hover {
+  filter: brightness(0.92);
+}
+
+/* Noun (default) */
+.malim-noun {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-noun {
+    background: rgba(30, 58, 138, 0.4);
+    color: #93c5fd;
+  }
+}
+
+/* Gender-colored nouns (Russian) — exact from getBlockPosClass() */
+.malim-gender-masc {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-gender-masc {
+    background: rgba(76, 29, 149, 0.4);
+    color: #c4b5fd;
+  }
+}
+
+.malim-gender-fem {
+  background: #ecfeff;
+  color: #0e7490;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-gender-fem {
+    background: rgba(21, 94, 117, 0.4);
+    color: #67e8f9;
+  }
+}
+
+.malim-gender-neut {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-gender-neut {
+    background: rgba(30, 58, 138, 0.4);
+    color: #93c5fd;
+  }
+}
+
+/* Verb */
+.malim-verb {
+  background: #fef2f2;
+  color: #dc2626;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-verb {
+    background: rgba(127, 29, 29, 0.4);
+    color: #fca5a5;
+  }
+}
+
+/* Adjective */
+.malim-adj {
+  background: #fffbeb;
+  color: #d97706;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-adj {
+    background: rgba(120, 53, 15, 0.4);
+    color: #fcd34d;
+  }
+}
+
+/* Adverb */
+.malim-adverb {
+  background: #ecfdf5;
+  color: #059669;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-adverb {
+    background: rgba(6, 78, 59, 0.4);
+    color: #6ee7b7;
+  }
+}
+
+/* Pronoun */
+.malim-pronoun {
+  background: #eef2ff;
+  color: #4338ca;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-pronoun {
+    background: rgba(49, 46, 129, 0.4);
+    color: #a5b4fc;
+  }
+}
+
+/* Preposition / Conjunction / Particle */
+.malim-particle {
+  background: #f4f4f5;
+  color: #52525b;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-particle {
+    background: rgba(63, 63, 70, 0.6);
+    color: #a1a1aa;
+  }
+}
+
+/* Article */
+.malim-article {
+  background: #fffbeb;
+  color: #d97706;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-article {
+    background: rgba(120, 53, 15, 0.4);
+    color: #fcd34d;
+  }
+}
+
+/* Punctuation */
+.malim-punct {
+  background: transparent;
+  color: #a1a1aa;
+  cursor: default;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-punct {
+    color: #52525b;
+  }
+}
+
+/* Unknown / Error */
+.malim-unknown {
+  background: #f8fafc;
+  color: #64748b;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-unknown {
+    background: rgba(30, 41, 59, 0.5);
+    color: #94a3b8;
+  }
+}
+
+/* Active token (ring effect) */
+.malim-token:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #660874;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-token:focus-visible {
+    box-shadow: 0 0 0 2px #9a2eb0;
+  }
+}
+
+/* ── Parsing overlay: blur the original text + hourglass ──── */
+
+.malim-parse-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.malim-parsing-overlay {
+  position: absolute;
+  inset: -4px;
+  background: rgba(240, 240, 245, 0.55);
+  backdrop-filter: blur(2px);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  pointer-events: none;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-parsing-overlay {
+    background: rgba(24, 24, 27, 0.5);
+  }
+}
+
+.malim-parsing-spinner {
+  color: #660874;
+  opacity: 0.7;
+  animation: malim-spin 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transform-origin: center;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-parsing-spinner {
+    color: #a78bfa;
+  }
+}
+
+@keyframes malim-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Word Popover — exact match of WordPopover.svelte
+   =========================================================== */
+
+.malim-popover {
+  position: fixed;
+  z-index: 999999;
+  width: 260px;
+  background: rgba(24, 24, 27, 0.95);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  transition: opacity 0.15s ease;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.malim-popover-inner {
+  position: relative;
+}
+
+.malim-popover-def {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  padding-right: 20px;
+}
+
+.malim-popover-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #9333ea;
+  color: #fff;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.malim-popover-grammar-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.malim-grammar-tag {
+  display: inline-block;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  border: 1px solid;
+}
+
+.malim-tag-tense {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.malim-tag-pf {
+  background: rgba(251, 146, 60, 0.15);
+  color: #fdba74;
+  border-color: rgba(251, 146, 60, 0.4);
+}
+
+.malim-tag-impf {
+  background: rgba(6, 182, 212, 0.15);
+  color: #67e8f9;
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.malim-popover-lemma {
+  font-size: 12px;
+  color: #d4d4d8;
+  margin-top: 4px;
+}
+
+.malim-popover-lemma-label {
+  color: #a1a1aa;
+}
+
+.malim-popover-lemma-value {
+  font-weight: 600;
+  color: #e4e4e7;
+}
+
+.malim-popover-note {
+  font-size: 12px;
+  color: #a1a1aa;
+  border-top: 1px solid rgba(113, 113, 122, 0.5);
+  padding-top: 6px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.malim-popover-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(24, 24, 27, 0.95);
+  transform: rotate(45deg);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Dictionary popover — styles from Dictionary.svelte
+   =========================================================== */
+
+.malim-dict-popover {
+  position: fixed;
+  z-index: 999999;
+  width: 380px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+  padding: 16px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #374151;
+}
+
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover {
+    background: #18181b;
+    border-color: #27272a;
+    color: #d4d4d8;
+  }
+}
+
+.malim-dict-content {
+  line-height: 1.6;
+}
+
+.malim-dict-empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 24px 0;
+  font-size: 14px;
+}
+
+/* ── OpenRussian entry styles (from Dictionary.svelte) ──── */
+
+.malim-dict-popover .page.word .section.basics h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #660874;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(102, 8, 116, 0.15);
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .page.word .section.basics h1 {
+    color: #8857e1;
+    border-color: rgba(226, 160, 248, 0.25);
+  }
+}
+
+.malim-dict-popover .page.word .overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.malim-dict-popover .page.word .overview p {
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  background: rgba(102, 8, 116, 0.08);
+  color: #660874;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .page.word .overview p {
+    background: rgba(226, 160, 248, 0.15);
+    color: #8857e1;
+  }
+}
+
+.malim-dict-popover .page.word .section {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.malim-dict-popover .page.word .section > h2 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.malim-dict-popover .page.word .section > h2::before {
+  content: "";
+  display: block;
+  width: 0.75rem;
+  height: 3px;
+  background: #660874;
+  border-radius: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .page.word .section > h2::before {
+    background: #8857e1;
+  }
+}
+
+.malim-dict-popover .section.translations ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.malim-dict-popover .section.translations li {
+  background: #fcfafb;
+  border: 1px solid rgba(102, 8, 116, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.translations li {
+    background: rgba(226, 160, 248, 0.05);
+  }
+}
+
+.malim-dict-popover .section.translations .tl {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.translations .tl {
+    color: #e5e7eb;
+  }
+}
+
+.malim-dict-popover .table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  margin-bottom: 1rem;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .table-container {
+    border-color: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+  }
+}
+
+.malim-dict-popover table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.malim-dict-popover th,
+.malim-dict-popover td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  font-size: 0.8rem;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover th,
+  .malim-dict-popover td {
+    border-bottom-color: rgba(255,255,255,0.05);
+  }
+}
+
+.malim-dict-popover th {
+  background: #fafafa;
+  font-weight: 700;
+  color: #4b5563;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover th {
+    background: rgba(255,255,255,0.03);
+    color: #9ca3af;
+  }
+}
+
+.malim-dict-popover td {
+  font-weight: 500;
+}
+
+.malim-dict-popover tbody tr:last-child th,
+.malim-dict-popover tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.malim-dict-popover .section.sentences ul.sentences {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.malim-dict-popover .section.sentences li.sentence {
+  padding: 0.5rem 0.75rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.sentences li.sentence {
+    background: rgba(255,255,255,0.02);
+  }
+}
+
+.malim-dict-popover .section.sentences .ru,
+.malim-dict-popover .section.expressions .ru {
+  display: block;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.2rem;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.sentences .ru,
+  .malim-dict-popover .section.expressions .ru {
+    color: #e5e7eb;
+  }
+}
+
+.malim-dict-popover .section.sentences .tl,
+.malim-dict-popover .section.expressions .tl {
+  display: block;
+  color: #6b7280;
+  font-style: italic;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.sentences .tl,
+  .malim-dict-popover .section.expressions .tl {
+    color: #9ca3af;
+  }
+}
+
+.malim-dict-popover .section.relateds2 ul,
+.malim-dict-popover .section.synonyms ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.25rem;
+}
+
+.malim-dict-popover .section.relateds2 li,
+.malim-dict-popover .section.synonyms li {
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 0.85rem;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.relateds2 li,
+  .malim-dict-popover .section.synonyms li {
+    background: rgba(255,255,255,0.02);
+    color: #e5e7eb;
+  }
+}
+
+.malim-dict-popover .section.relateds2 li span,
+.malim-dict-popover .section.synonyms li span {
+  font-weight: 400;
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-top: 0.15rem;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover .section.relateds2 li span,
+  .malim-dict-popover .section.synonyms li span {
+    color: #9ca3af;
+  }
+}
+
+/* ── Scrollbar styling (from Reader.svelte) ────────────────── */
+
+.malim-dict-popover::-webkit-scrollbar {
+  width: 4px;
+}
+.malim-dict-popover::-webkit-scrollbar-track {
+  background: transparent;
+}
+.malim-dict-popover::-webkit-scrollbar-thumb {
+  background: rgba(24, 24, 27, 0.35);
+  border-radius: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  .malim-dict-popover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Error toast
+   =========================================================== */
+
+.malim-error {
+  animation: malim-fade-in 0.2s ease;
+}
+
+@keyframes malim-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
